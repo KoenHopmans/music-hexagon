@@ -2,10 +2,7 @@ package com.novi.hexagon.service;
 
 import com.novi.hexagon.exceptions.RecordNotFoundException;
 import com.novi.hexagon.exceptions.UsernameNotFoundException;
-import com.novi.hexagon.model.Authority;
-import com.novi.hexagon.model.Comment;
-import com.novi.hexagon.model.Demo;
-import com.novi.hexagon.model.User;
+import com.novi.hexagon.model.*;
 import com.novi.hexagon.repository.DemoRepository;
 import com.novi.hexagon.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +37,7 @@ public class DemoService {
         if (!demoRepository.existsByDemo(fileName)) throw new UsernameNotFoundException(fileName);
         Optional<Demo> demo = demoRepository.findByDemo(fileName);
         Demo goodDemo = demo.get();
-        goodDemo.setFeedback(newDemo.getFeedback());
+//        goodDemo.setFeedback(newDemo.getFeedback());
         goodDemo.setArtist(newDemo.getArtist());
         goodDemo.setCover(newDemo.getCover());
         goodDemo.setTrackName(newDemo.getTrackName());
@@ -66,17 +63,26 @@ public class DemoService {
         fileStorageService.deleteFile(cover);
     }
 
-    public void addComment(String fileName, String comment) {
-
-        Demo demo = demoRepository.findByDemo(fileName).get();
-//       demo.addComments(new Comment(username, authority));
-        demoRepository.save(demo);
-    }
+//    public void addComment(String fileName, String comment) {
+//
+//        Demo demo = demoRepository.findByDemo(fileName).get();
+////       demo.addComments(new Comment(username, authority));
+//        demoRepository.save(demo);
+//    }
 
     public void addDemoComment(String fileName, String comment) {
         if (!demoRepository.existsByDemo(fileName)) throw new UsernameNotFoundException(fileName);
         Demo demo = demoRepository.findByDemo(fileName).get();
         demo.addComment(new Comment(fileName, comment));
+        demoRepository.save(demo);
+    }
+
+
+
+    public void addDemoFeedback(String fileName, String feedback) {
+        if (!demoRepository.existsByDemo(fileName)) throw new UsernameNotFoundException(fileName);
+        Demo demo = demoRepository.findByDemo(fileName).get();
+        demo.addFeedback(new Feedback(fileName, feedback));
         demoRepository.save(demo);
     }
 

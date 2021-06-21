@@ -38,7 +38,7 @@ public class DemoController {
     @PostMapping(value = "/demo-upload")
     public ResponseEntity<Object> addDemo(@RequestParam(value = "username" ) String username,
                                           @RequestParam(value = "artist" ,required = false) String artist,
-                                          @RequestParam(value = "feedback" ,required = false) String feedback,
+//                                          @RequestParam(value = "feedback" ,required = false) String feedback,
                                           @RequestParam(value = "comment" ,required = false) String comment,
                                           @RequestParam(value = "trackName" ,required = false) String trackName,
                                           @RequestParam(value = "musicFile" ,required = false) MultipartFile musicFile,
@@ -52,7 +52,7 @@ public class DemoController {
             Demo demo = new Demo();
             demo.setUsername(username);
             demo.setArtist(artist);
-            demo.setFeedback(feedback);
+//            demo.setFeedback(feedback);
             demo.addComment(myComment);
             demo.setTrackName(trackName);
             demo.setDemo(musicFile.getOriginalFilename());
@@ -62,7 +62,7 @@ public class DemoController {
 
             System.out.println("FILE-NAME " + musicFile.getOriginalFilename());
             System.out.println("ARTIST " + artist);
-            System.out.println("FEEDBACK " + feedback);
+//            System.out.println("FEEDBACK " + feedback);
             System.out.println("USERNAME " + username);
             if(!(cover==null)){ System.out.println("COVER " + cover.getOriginalFilename());}
 
@@ -117,11 +117,11 @@ public class DemoController {
                                              @RequestParam(value = "file" ,required = false) MultipartFile file)
     {
         try {
-            fileStorageService.uploadFile(file);
+            if(!(file==null)){fileStorageService.uploadFile(file);}
             Demo demo = new Demo();
             demo.setArtist(artist);
             demo.setTrackName(trackName);
-            demo.setCover(file.getOriginalFilename());
+            if(!(file==null)){demo.setCover(file.getOriginalFilename());}
 
             demoService.updateDemo(demo, fileName);
 
@@ -153,5 +153,17 @@ public class DemoController {
             throw new BadRequestException();
         }
     }
-}
 
+
+    @PostMapping(value = "/{fileName}/feedback")
+    public ResponseEntity<Object> addFeedback(@PathVariable("fileName") String fileName,
+                                             @RequestBody Map<String, Object> fields) {
+        try {
+            String feedback = (String) fields.get("feedback");
+            demoService.addDemoFeedback(fileName, feedback);
+            return ResponseEntity.noContent().build();
+        } catch (Exception ex) {
+            throw new BadRequestException();
+        }
+    }
+}

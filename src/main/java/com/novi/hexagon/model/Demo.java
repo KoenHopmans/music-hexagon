@@ -26,8 +26,6 @@ public class Demo implements Serializable {
     @Column
     private String artist;
 
-    @Column
-    private String feedback;
 
 
 
@@ -44,6 +42,17 @@ public class Demo implements Serializable {
             orphanRemoval = true,
             fetch = FetchType.EAGER)
     private Set<com.novi.hexagon.model.Comment> comments = new HashSet<>();
+
+    @OneToMany(
+            targetEntity = com.novi.hexagon.model.Feedback.class,
+            mappedBy = "demo",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER)
+    private Set<com.novi.hexagon.model.Feedback> feedbacks = new HashSet<>();
+
+
+
 
     public Demo() {}
     public Demo(String username, String demo) {
@@ -67,13 +76,16 @@ public class Demo implements Serializable {
     public void setCover(String cover) { this.cover = cover;}
     public String getArtist() { return artist; }
     public void setArtist(String artist) { this.artist = artist; }
-    public String getFeedback() { return feedback; }
-    public void setFeedback(String feedback) { this.feedback = feedback; }
     public String getTrackName() { return trackName;}
     public void setTrackName(String trackName) { this.trackName = trackName;}
     public Set<Comment> getComments() { return comments; }
     public void setComments(Set<Comment> comments) {this.comments = comments;}
     public void addComment(Comment comment) { this.comments.add(comment); }
     public void removeComment(Comment comment) { this.comments.remove(comment); }
-    }
+    public Set<Feedback> getFeedbacks() { return feedbacks; }
+    public void setFeedbacks(Set<Feedback> feedbacks) {this.feedbacks = feedbacks;}
+    public void addFeedback(Feedback feedback) { this.feedbacks.add(feedback); }
+    public void removeFeedback(Feedback feedback) { this.feedbacks.remove(feedback); }
+}
+
 
