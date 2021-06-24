@@ -39,7 +39,7 @@ public class DemoService {
         Demo goodDemo = demo.get();
 //        goodDemo.setFeedback(newDemo.getFeedback());
         goodDemo.setArtist(newDemo.getArtist());
-        goodDemo.setCover(newDemo.getCover());
+        if(!(newDemo.getCover()==null)){goodDemo.setCover(newDemo.getCover());}
         goodDemo.setTrackName(newDemo.getTrackName());
 //        goodDemo.setComment(newDemo.getComment());
         demoRepository.save(goodDemo);
@@ -50,6 +50,7 @@ public class DemoService {
     public Optional<Demo> getDemoByFilename(String filename){
         if (!demoRepository.existsByDemo(filename)) throw new UsernameNotFoundException(filename);
         Optional<Demo> demo = demoRepository.findByDemo(filename);
+        System.out.println(demo);
         return demo;
     }
 

@@ -117,11 +117,13 @@ public class DemoController {
                                              @RequestParam(value = "file" ,required = false) MultipartFile file)
     {
         try {
-            if(!(file==null)){fileStorageService.uploadFile(file);}
+            if(!(file==null)){fileStorageService.uploadFile(file);
+                System.out.println("CHANGE FILE");}
             Demo demo = new Demo();
             demo.setArtist(artist);
             demo.setTrackName(trackName);
-            if(!(file==null)){demo.setCover(file.getOriginalFilename());}
+            if(!(file==null)){demo.setCover(file.getOriginalFilename());
+                System.out.println("CHANGE FILE");}
 
             demoService.updateDemo(demo, fileName);
 
