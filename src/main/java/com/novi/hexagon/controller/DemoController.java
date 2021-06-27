@@ -162,7 +162,32 @@ public class DemoController {
                                              @RequestBody Map<String, Object> fields) {
         try {
             String feedback = (String) fields.get("feedback");
-            demoService.addDemoFeedback(fileName, feedback);
+            String date = (String) fields.get("date");
+            demoService.addDemoFeedback(fileName, feedback, date);
+            return ResponseEntity.noContent().build();
+        } catch (Exception ex) {
+            throw new BadRequestException();
+        }
+    }
+
+    @DeleteMapping(value = "/{fileName}/feedback")
+    public ResponseEntity<Object> deleteFeedback(@PathVariable("fileName") String fileName,
+                                             @RequestBody Map<String, java.lang.Object> fields) {
+        try {
+            String feedback = (String) fields.get("feedback");
+            demoService.deleteFeedback(fileName, feedback);
+            return ResponseEntity.noContent().build();
+        } catch (Exception ex) {
+            throw new BadRequestException();
+        }
+    }
+
+    @PutMapping(value = "/{fileName}/feedback")
+    public ResponseEntity<Object> updateFeedback(@PathVariable("fileName") String fileName,
+                                                 @RequestBody Map<String, java.lang.Object> fields) {
+        try {
+            String feedback = (String) fields.get("feedback");
+            demoService.updateFeedback(fileName, feedback);
             return ResponseEntity.noContent().build();
         } catch (Exception ex) {
             throw new BadRequestException();

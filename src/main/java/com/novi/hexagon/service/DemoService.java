@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -80,10 +81,30 @@ public class DemoService {
 
 
 
-    public void addDemoFeedback(String fileName, String feedback) {
+    public void addDemoFeedback(String fileName, String feedback, String date) {
         if (!demoRepository.existsByDemo(fileName)) throw new UsernameNotFoundException(fileName);
         Demo demo = demoRepository.findByDemo(fileName).get();
-        demo.addFeedback(new Feedback(fileName, feedback));
+        demo.addFeedback(new Feedback(fileName, feedback, date));
+        demoRepository.save(demo);
+    }
+
+    public void deleteFeedback(String fileName, String feedback) {
+        if (!demoRepository.existsByDemo(fileName)) throw new UsernameNotFoundException(fileName);
+        Demo demo = demoRepository.findByDemo(fileName).get();
+        Feedback feedbackToRemove =
+                demo.getFeedbacks().stream().filter((a) -> a.getFeedback().equalsIgnoreCase(feedback)).findAny().get();
+        demo.removeFeedback(feedbackToRemove);
+        demoRepository.save(demo);
+    }
+
+    public void updateFeedback(String fileName, String feedback) {
+        if (!demoRepository.existsByDemo(fileName)) throw new UsernameNotFoundException(fileName);
+        Demo demo = demoRepository.findByDemo(fileName).get();
+        Feedback feedbackToUpdate =
+                demo.getFeedbacks().stream().filter((a) -> a.getFeedback().equalsIgnoreCase(feedback)).findAny().get();
+        demo.removeFeedback(feedbackToUpdate);
+        feedbackToUpdate.setRead(true);
+        demo.addFeedback(feedbackToUpdate);
         demoRepository.save(demo);
     }
 

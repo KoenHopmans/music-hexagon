@@ -10,6 +10,12 @@ import java.io.Serializable;
 @Table(name = "feedbacks")
 public class Feedback implements Serializable {
 
+    public Feedback(String demo, String feedback, String date) {
+        this.demo = demo;
+        this.feedback = feedback;
+        this.date = date;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
@@ -22,9 +28,11 @@ public class Feedback implements Serializable {
     private String feedback;
 
 
+    @Column(nullable = false)
+    private String date;
 
     @Column
-    private boolean readed ;
+    private boolean read ;
 
     public Feedback() {
     }
@@ -33,8 +41,10 @@ public class Feedback implements Serializable {
     public String getDemo() {  return demo;}public void setDemo(String demo) {  this.demo = demo;}
     public String getFeedback() {  return feedback;}
     public void setFeedback(String feedback) {  this.feedback = feedback;}
-    public boolean isRead() {return readed;}
-    public void setRead(boolean readed) {this.readed = readed;}
+    public boolean isRead() {return read;}
+    public void setRead(boolean read) {this.read = read;}
+    public String getDate() {return date;}
+    public void setDate(String date) {this.date = date;}
 
 
 }
