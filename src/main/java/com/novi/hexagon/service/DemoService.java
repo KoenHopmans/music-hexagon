@@ -72,19 +72,18 @@ public class DemoService {
 //        demoRepository.save(demo);
 //    }
 
-    public void addDemoComment(String fileName, String comment) {
+    public void addDemoComment(String fileName, String comment, String date, String messenger) {
         if (!demoRepository.existsByDemo(fileName)) throw new UsernameNotFoundException(fileName);
         Demo demo = demoRepository.findByDemo(fileName).get();
-        demo.addComment(new Comment(fileName, comment));
+        demo.addComment(new Comment(fileName, comment, date, messenger));
         demoRepository.save(demo);
     }
 
 
-
-    public void addDemoFeedback(String fileName, String feedback, String date) {
+    public void addDemoFeedback(String fileName, String feedback, String date, String messenger) {
         if (!demoRepository.existsByDemo(fileName)) throw new UsernameNotFoundException(fileName);
         Demo demo = demoRepository.findByDemo(fileName).get();
-        demo.addFeedback(new Feedback(fileName, feedback, date));
+        demo.addFeedback(new Feedback(fileName, feedback, date, messenger));
         demoRepository.save(demo);
     }
 
@@ -97,6 +96,15 @@ public class DemoService {
         demoRepository.save(demo);
     }
 
+    public void deleteComment(String fileName, String comment) {
+        if (!demoRepository.existsByDemo(fileName)) throw new UsernameNotFoundException(fileName);
+        Demo demo = demoRepository.findByDemo(fileName).get();
+        Comment commentToRemove =
+                demo.getComments().stream().filter((a) -> a.getComment().equalsIgnoreCase(comment)).findAny().get();
+        demo.removeComment(commentToRemove);
+        demoRepository.save(demo);
+    }
+
     public void updateFeedback(String fileName, String feedback) {
         if (!demoRepository.existsByDemo(fileName)) throw new UsernameNotFoundException(fileName);
         Demo demo = demoRepository.findByDemo(fileName).get();
@@ -105,6 +113,17 @@ public class DemoService {
         demo.removeFeedback(feedbackToUpdate);
         feedbackToUpdate.setRead(true);
         demo.addFeedback(feedbackToUpdate);
+        demoRepository.save(demo);
+    }
+
+    public void updateComment(String fileName, String comment) {
+        if (!demoRepository.existsByDemo(fileName)) throw new UsernameNotFoundException(fileName);
+        Demo demo = demoRepository.findByDemo(fileName).get();
+        Comment commentToUpdate =
+                demo.getComments().stream().filter((a) -> a.getComment().equalsIgnoreCase(comment)).findAny().get();
+        demo.removeComment(commentToUpdate);
+        commentToUpdate.setRead(true);
+        demo.addComment(commentToUpdate);
         demoRepository.save(demo);
     }
 

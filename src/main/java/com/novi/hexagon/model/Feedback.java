@@ -10,10 +10,11 @@ import java.io.Serializable;
 @Table(name = "feedbacks")
 public class Feedback implements Serializable {
 
-    public Feedback(String demo, String feedback, String date) {
+    public Feedback(String demo, String feedback, String date, String messenger) {
         this.demo = demo;
         this.feedback = feedback;
         this.date = date;
+        this.messenger = messenger;
     }
 
     @Id
@@ -31,6 +32,10 @@ public class Feedback implements Serializable {
     @Column(nullable = false)
     private String date;
 
+
+    @Column(nullable = false)
+    private String messenger;
+
     @Column
     private boolean read ;
 
@@ -45,6 +50,8 @@ public class Feedback implements Serializable {
     public void setRead(boolean read) {this.read = read;}
     public String getDate() {return date;}
     public void setDate(String date) {this.date = date;}
+    public String getMessenger() {return messenger;}
+    public void setMessenger(String messenger) {this.messenger = messenger;}
 
 
 }

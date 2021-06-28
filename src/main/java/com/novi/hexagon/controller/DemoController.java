@@ -40,6 +40,7 @@ public class DemoController {
                                           @RequestParam(value = "artist" ,required = false) String artist,
 //                                          @RequestParam(value = "feedback" ,required = false) String feedback,
                                           @RequestParam(value = "comment" ,required = false) String comment,
+                                          @RequestParam(value = "date" ,required = false) String date,
                                           @RequestParam(value = "trackName" ,required = false) String trackName,
                                           @RequestParam(value = "musicFile" ,required = false) MultipartFile musicFile,
                                           @RequestParam(value = "cover" ,required = false) MultipartFile cover) {
@@ -47,7 +48,7 @@ public class DemoController {
             fileStorageService.uploadFile(musicFile);
             if(!(cover==null)){ fileStorageService.uploadFile(cover);};
 
-            Comment myComment = new Comment(musicFile.getOriginalFilename(),comment);
+            Comment myComment = new Comment(musicFile.getOriginalFilename(),comment,date, username);
 
             Demo demo = new Demo();
             demo.setUsername(username);
@@ -149,7 +150,9 @@ public class DemoController {
                                     @RequestBody Map<String, Object> fields) {
         try {
             String comment = (String) fields.get("comment");
-            demoService.addDemoComment(fileName, comment);
+            String date = (String) fields.get("date");
+            String messenger = (String) fields.get("messenger");
+            demoService.addDemoComment(fileName, comment, date, messenger);
             return ResponseEntity.noContent().build();
         } catch (Exception ex) {
             throw new BadRequestException();
@@ -163,7 +166,8 @@ public class DemoController {
         try {
             String feedback = (String) fields.get("feedback");
             String date = (String) fields.get("date");
-            demoService.addDemoFeedback(fileName, feedback, date);
+            String messenger = (String) fields.get("messenger");
+            demoService.addDemoFeedback(fileName, feedback, date, messenger);
             return ResponseEntity.noContent().build();
         } catch (Exception ex) {
             throw new BadRequestException();
@@ -182,12 +186,38 @@ public class DemoController {
         }
     }
 
+    @DeleteMapping(value = "/{fileName}/comment")
+    public ResponseEntity<Object> deleteComment(@PathVariable("fileName") String fileName,
+                                                 @RequestBody Map<String, java.lang.Object> fields) {
+        try {
+            String comment = (String) fields.get("comment");
+            demoService.deleteComment(fileName, comment);
+            return ResponseEntity.noContent().build();
+        } catch (Exception ex) {
+            throw new BadRequestException();
+        }
+    }
+
+
     @PutMapping(value = "/{fileName}/feedback")
     public ResponseEntity<Object> updateFeedback(@PathVariable("fileName") String fileName,
                                                  @RequestBody Map<String, java.lang.Object> fields) {
         try {
             String feedback = (String) fields.get("feedback");
             demoService.updateFeedback(fileName, feedback);
+            return ResponseEntity.noContent().build();
+        } catch (Exception ex) {
+            throw new BadRequestException();
+        }
+    }
+
+
+    @PutMapping(value = "/{fileName}/comment")
+    public ResponseEntity<Object> updateComment(@PathVariable("fileName") String fileName,
+                                                 @RequestBody Map<String, java.lang.Object> fields) {
+        try {
+            String comment = (String) fields.get("comment");
+            demoService.updateComment(fileName, comment);
             return ResponseEntity.noContent().build();
         } catch (Exception ex) {
             throw new BadRequestException();
