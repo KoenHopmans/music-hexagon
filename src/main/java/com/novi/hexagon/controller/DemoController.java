@@ -54,7 +54,7 @@ public class DemoController {
             demo.setUsername(username);
             demo.setArtist(artist);
 //            demo.setFeedback(feedback);
-            demo.addComment(myComment);
+            if(!(comment==null)){demo.addComment(myComment);}
             demo.setTrackName(trackName);
             demo.setDemo(musicFile.getOriginalFilename());
             if(!(cover==null)){demo.setCover(cover.getOriginalFilename());}

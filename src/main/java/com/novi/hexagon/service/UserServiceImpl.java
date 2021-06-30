@@ -53,7 +53,7 @@ public class UserServiceImpl implements com.novi.hexagon.service.UserService {
 
     @Override
     public void deleteUser(String username) {
-        userRepository.deleteById(username);
+        userRepository.deleteByUsername(username);
     }
 
     @Override

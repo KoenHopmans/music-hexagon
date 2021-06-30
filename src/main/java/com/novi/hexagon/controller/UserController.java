@@ -2,6 +2,7 @@ package com.novi.hexagon.controller;
 
 import com.novi.hexagon.exceptions.BadRequestException;
 import com.novi.hexagon.model.User;
+import com.novi.hexagon.repository.UserRepository;
 import com.novi.hexagon.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @GetMapping(value = "")
     public ResponseEntity<Object> getUsers() {
         return ResponseEntity.ok().body(userService.getUsers());
@@ -32,6 +36,9 @@ public class UserController {
 
     @PostMapping(value = "")
     public ResponseEntity<Object> createUser(@RequestBody User user) {
+        if (userRepository.existsById(user.getUsername())){
+//            To Do make User exist exception
+        throw new BadRequestException();}
         String newUsername = userService.createUser(user);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
