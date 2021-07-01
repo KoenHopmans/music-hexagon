@@ -27,8 +27,6 @@ public class Demo implements Serializable {
     private String artist;
 
 
-
-
     @Column
     private String trackName;
 
