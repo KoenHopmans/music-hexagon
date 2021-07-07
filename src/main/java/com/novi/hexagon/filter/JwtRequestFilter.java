@@ -1,6 +1,5 @@
 package com.novi.hexagon.filter;
 
-
 import com.novi.hexagon.service.CustomUserDetailsService;
 import com.novi.hexagon.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +51,5 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
-
     }
-
 }

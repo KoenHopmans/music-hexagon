@@ -49,14 +49,23 @@ public class Demo implements Serializable {
             fetch = FetchType.EAGER)
     private Set<com.novi.hexagon.model.Feedback> feedbacks = new HashSet<>();
 
+    public Demo() {
+    }
 
-
-
-    public Demo() {}
     public Demo(String username, String demo) {
         this.username = username;
         this.demo = demo;
     }
+
+    public Demo(String username, String demo, String cover, String artist, String trackName) {
+        this.username = username;
+        this.demo = demo;
+        this.cover = cover;
+        this.artist = artist;
+        this.trackName = trackName;
+    }
+
+
 
     public String getUsername() {
         return username;

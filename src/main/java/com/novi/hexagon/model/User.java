@@ -15,8 +15,8 @@ public class User {
     @Column(nullable = false, length = 255)
     private String password;
 
-    @Column(nullable = false)
-    private boolean enabled = true;
+//    @Column(nullable = false)
+//    private boolean enabled = true;
 
     @Column
     private String apikey;
@@ -64,6 +64,14 @@ public class User {
             fetch = FetchType.EAGER)
     private Set<com.novi.hexagon.model.Demo> demos = new HashSet<>();
 
+    public User(String username) {
+        this.username = username;
+    }
+
+    public User() {
+
+    }
+
     public String getUsername() { return username; }
     public void setUsername(String username) {
         this.username = username;
@@ -82,8 +90,8 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    public boolean isEnabled() { return enabled;}
-    public void setEnabled(boolean enabled) { this.enabled = enabled; }
+//    public boolean isEnabled() { return enabled;}
+//    public void setEnabled(boolean enabled) { this.enabled = enabled; }
     public String getApikey() { return apikey; }
     public void setApikey(String apikey) { this.apikey = apikey; }
     public String getEmail() { return email; }
@@ -94,6 +102,7 @@ public class User {
     public void setPhoto(String phoneNumber) { this.photo = phoneNumber; }
     public String getBirthDate() { return birthDate; }
     public void setBirthDate(String birthDate) { this.birthDate = birthDate; }
+
     public Set<Authority> getAuthorities() { return authorities; }
     public void addAuthority(Authority authority) {
         this.authorities.add(authority);

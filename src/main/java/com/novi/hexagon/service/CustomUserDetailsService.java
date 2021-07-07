@@ -2,6 +2,7 @@ package com.novi.hexagon.service;
 
 import com.novi.hexagon.model.Authority;
 import com.novi.hexagon.model.User;
+import com.novi.hexagon.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,6 +21,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
     private UserService userService;
+
 
 //    @Autowired
 //    private AuthorityService authorityService;

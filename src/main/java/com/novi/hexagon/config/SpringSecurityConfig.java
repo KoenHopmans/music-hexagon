@@ -46,13 +46,36 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        //JWT token authentication
         http
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/v1/authenticate").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/v1/producers/**").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.GET,"/api/v1/users/**/authorities").hasRole("ADMIN")
+                // ALL ENDPOINTS
+//                .antMatchers(HttpMethod.GET,"/api/v1/authenticated").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.POST,"/api/v1/authenticate").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.POST,"/api/v1/demo").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.GET,"/api/v1/demo/{fileName}").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.PUT,"/api/v1/demo/{fileName}").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.DELETE,"/api/v1/demo/{fileName}").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.POST,"/api/v1/{fileName}/comment").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.PUT,"/api/v1/{fileName}/comment").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.DELETE,"/api/v1/{fileName}/comment").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.POST,"/api/v1/{fileName}/feedback").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.PUT,"/api/v1/{fileName}/feedback").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.DELETE,"/api/v1/{fileName}/feedback").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.GET,"/api/v1/downloadFile/{fileName:.+}").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.GET,"/").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.GET,"/api/v1/users/").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.GET,"/api/v1/users/{username}").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.POST,"/api/v1/users/{username}").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.PUT,"/api/v1/users/{username}").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.DELETE,"/api/v1/users/{username}").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.PUT,"/api/v1/users/{username}/password").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.GET,"/api/v1/users/{username}/authorities").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.POST,"/api/v1/users/{username}/authorities").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.DELETE,"/api/v1/users/{username}/authorities/{authority}").hasRole("ADMIN")
+                // END
                 .anyRequest().permitAll()
                 .and()
                 .sessionManagement()
@@ -65,7 +88,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     public class WebConfig {
 
         @Autowired
-        private CrosFilter corsFilter;
+        private MyCorsFilter corsFilter;
 
         @Bean
         public FilterRegistrationBean corsFilter() {

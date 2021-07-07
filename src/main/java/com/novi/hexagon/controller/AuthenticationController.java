@@ -1,15 +1,11 @@
 package com.novi.hexagon.controller;
 
-import com.novi.hexagon.model.Authority;
-import com.novi.hexagon.model.Dto;
+import com.novi.hexagon.payload.AuthorityDto;
 import com.novi.hexagon.payload.AuthenticationRequest;
-import com.novi.hexagon.payload.AuthenticationResponse;
 import com.novi.hexagon.payload.AuthenticationResponseDto;
 import com.novi.hexagon.service.CustomUserDetailsService;
 import com.novi.hexagon.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -18,12 +14,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import org.yaml.snakeyaml.util.ArrayUtils;
 
 import java.security.Principal;
 import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -48,14 +41,10 @@ public class AuthenticationController {
 
     }
 
-    @GetMapping(value = "/authenticate")
-    @ResponseStatus(HttpStatus.OK)
-    public String hello() {
-        return "Hello World";}
-
-
-
-
+//    @GetMapping(value = "/authenticate")
+//    @ResponseStatus(HttpStatus.OK)
+//    public String hello() {
+//        return "Hello World";}
 
     @PostMapping(value = "/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
@@ -78,7 +67,7 @@ public class AuthenticationController {
         Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
 //        System.out.println(authorities);
         final String jwt = jwtUtl.generateToken(userDetails);
-        Dto dto = new Dto();
+        AuthorityDto dto = new AuthorityDto();
 
         dto.setJwt(jwtUtl.generateToken(userDetails));
         boolean admin = false;

@@ -1,8 +1,8 @@
 package com.novi.hexagon.controller;
 
 import com.novi.hexagon.model.Demo;
-import com.novi.hexagon.model.Producer;
-import com.novi.hexagon.model.UploadDemo;
+//import com.novi.hexagon.model.Producer;
+//import com.novi.hexagon.model.UploadDemo;
 import com.novi.hexagon.model.User;
 import com.novi.hexagon.service.FileStorageService;
 import org.slf4j.Logger;
@@ -36,27 +36,27 @@ public class FileController {
     @Autowired
     FileStorageService fileStorageService;
 
-    @GetMapping("/file-upload")
-    @ResponseStatus(HttpStatus.OK)
-    public String helloUpload() {
-        return "Hello upload";
-    }
+//    @GetMapping("/file-upload")
+//    @ResponseStatus(HttpStatus.OK)
+//    public String helloUpload() {
+//        return "Hello upload";
+//    }
 
-    @PostMapping(path="/file-upload" , consumes = {MULTIPART_FORM_DATA_VALUE})
-    public String uploadFile(@RequestParam("username") String username,
-                             @RequestParam("artist") Object artist,
-                             @RequestParam("file") MultipartFile file,
-                             RedirectAttributes redirectAttributes) {
-
-        fileStorageService.uploadFile(file);
-
-
-
-        redirectAttributes.addFlashAttribute("message",
-                "You successfully uploaded " + file.getOriginalFilename() + "!");
-
-        return "redirect:/";
-    }
+//    @PostMapping(path="/file-upload" , consumes = {MULTIPART_FORM_DATA_VALUE})
+//    public String uploadFile(@RequestParam("username") String username,
+//                             @RequestParam("artist") Object artist,
+//                             @RequestParam("file") MultipartFile file,
+//                             RedirectAttributes redirectAttributes) {
+//
+//        fileStorageService.uploadFile(file);
+//
+//
+//
+//        redirectAttributes.addFlashAttribute("message",
+//                "You successfully uploaded " + file.getOriginalFilename() + "!");
+//
+//        return "redirect:/";
+//    }
 
 
 

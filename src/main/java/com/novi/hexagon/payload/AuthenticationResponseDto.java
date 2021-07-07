@@ -1,16 +1,14 @@
 package com.novi.hexagon.payload;
 
-import com.novi.hexagon.model.Dto;
-
 public class AuthenticationResponseDto {
 
-final Dto dto;
+final AuthorityDto dto;
 
-    public AuthenticationResponseDto(Dto dto) {
+    public AuthenticationResponseDto(AuthorityDto dto) {
         this.dto = dto;
     }
 
-    public Dto getDto() {
+    public AuthorityDto getDto() {
         return dto;
     }
 
