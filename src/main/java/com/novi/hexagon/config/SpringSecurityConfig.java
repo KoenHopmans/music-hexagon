@@ -1,6 +1,7 @@
 package com.novi.hexagon.config;
 
 import com.novi.hexagon.filter.JwtRequestFilter;
+
 import com.novi.hexagon.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;

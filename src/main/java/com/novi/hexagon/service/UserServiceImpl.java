@@ -10,12 +10,14 @@ import com.novi.hexagon.utils.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 
 @Service
+@Transactional
 public class UserServiceImpl implements com.novi.hexagon.service.UserService {
 
     @Autowired
@@ -48,6 +50,15 @@ public class UserServiceImpl implements com.novi.hexagon.service.UserService {
 //        return userRepository.existsById(username);
 //    }
 
+//    @Override
+//    public String createUser(User user) {
+//        String randomString = RandomStringGenerator.generateAlphaNumeric(20);
+//        user.setApikey(randomString);
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//        User newUser = userRepository.save(user);
+//        return newUser.getUsername();
+//    }
+
     @Override
     public String createUser(User user) {
         String randomString = RandomStringGenerator.generateAlphaNumeric(20);
@@ -56,6 +67,7 @@ public class UserServiceImpl implements com.novi.hexagon.service.UserService {
         User newUser = userRepository.save(user);
         return newUser.getUsername();
     }
+
 
     @Override
     public void deleteUser(String username) {

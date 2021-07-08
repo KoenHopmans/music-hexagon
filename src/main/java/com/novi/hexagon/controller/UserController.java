@@ -79,11 +79,25 @@ public class UserController {
         return ResponseEntity.ok().body(userService.getUser(username));
     }
 
+
+//    @PostMapping(value = "")
+//    public ResponseEntity<Object> createUser(@RequestBody User user) {
+//        if (userRepository.existsById(user.getUsername())){
+////            To Do make User exist exception
+//            throw new BadRequestException();}
+//        String newUsername = userService.createUser(user);
+//
+//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
+//                .buildAndExpand(newUsername).toUri();
+//
+//        return ResponseEntity.created(location).build();
+//    }
+
     @PostMapping(value = "")
     public ResponseEntity<Object> createUser(@RequestBody User user) {
         if (userRepository.existsById(user.getUsername())){
 //            To Do make User exist exception
-        throw new BadRequestException();}
+            throw new BadRequestException();}
         String newUsername = userService.createUser(user);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
@@ -91,6 +105,8 @@ public class UserController {
 
         return ResponseEntity.created(location).build();
     }
+
+
 
 //    @PutMapping(value = "/{username}")
 //    public ResponseEntity<Object> updateUser(@PathVariable("username") String username, @RequestBody User user) {

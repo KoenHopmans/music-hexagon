@@ -19,6 +19,11 @@ import java.util.Set;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
+    public CustomUserDetailsService(UserService userService) {
+        this.userService = userService;
+    }
+
+
     @Autowired
     private UserService userService;
 

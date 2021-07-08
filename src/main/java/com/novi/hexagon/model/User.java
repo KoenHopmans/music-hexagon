@@ -8,6 +8,26 @@ import java.util.Set;
 @Table(name = "users")
 public class User {
 
+    public User(String username, String password, String email, String photo, String birthDate, String firstName,
+                String lastName, String about, String location, String gender) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.photo = photo;
+        this.birthDate = birthDate;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.about = about;
+        this.location = location;
+        this.gender = gender;
+    }
+
+    public User() {
+
+    }
+
+
+
     @Id
     @Column(nullable = false, unique = true)
     private String username;
@@ -15,8 +35,8 @@ public class User {
     @Column(nullable = false, length = 255)
     private String password;
 
-//    @Column(nullable = false)
-//    private boolean enabled = true;
+    @Column(nullable = false)
+    private boolean enabled = true;
 
     @Column
     private String apikey;
@@ -68,9 +88,11 @@ public class User {
         this.username = username;
     }
 
-    public User() {
-
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
+
 
     public String getUsername() { return username; }
     public void setUsername(String username) {

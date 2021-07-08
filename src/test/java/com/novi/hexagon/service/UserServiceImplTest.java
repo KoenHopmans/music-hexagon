@@ -76,6 +76,7 @@ class UserServiceImplTest {
         verify(userRepository).save(testUser);
     }
 
+
 //    @Test
 //    void testUpdatePassword() {
 //        User testUser = new User("testUsername");
@@ -99,7 +100,6 @@ class UserServiceImplTest {
         assertEquals(userCaptor.getValue().getPassword(), "encodedPassword");
     }
 
-
     @Test
     void testUpdatePassword2() {
         User testUser = new User("testUsername");
@@ -108,8 +108,12 @@ class UserServiceImplTest {
     }
 
 
-
-
+    @Test
+    void testUpdatePassword_NotFoundException() {
+        User testUser = new User("testUsername");
+        when(userRepository.existsById(testUser.getUsername())).thenReturn(false);
+        assertThrows(RecordNotFoundException.class,()->{userService.updatePassword(testUser.getUsername(),testUser);});
+    }
 
 
     @Test
