@@ -6,12 +6,10 @@ import com.novi.hexagon.repository.UserRepository;
 import com.novi.hexagon.service.FileStorageService;
 import com.novi.hexagon.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.net.URI;
 import java.util.Map;
 import java.util.Optional;
@@ -30,7 +28,6 @@ public class UserController {
     @Autowired
     FileStorageService fileStorageService;
 
-//    @PutMapping(value = "/profile/{username}")
     @PutMapping(value = "/{username}")
     public ResponseEntity<Object> updateUser(@PathVariable(value = "username" ,required = false) String username,
                                              @RequestParam(value = "birthDate",required = false) String birthDate,
@@ -43,8 +40,6 @@ public class UserController {
                                              @RequestParam(value = "file", required = false) Optional<MultipartFile> file
     ) {
         User newUser = new User();
-
-
         newUser.setEmail(email);
         newUser.setFirstName(firstName);
         newUser.setLastName(lastName);
@@ -53,8 +48,6 @@ public class UserController {
         newUser.setLocation(location);
         newUser.setBirthDate(birthDate);
         if(!(file.isEmpty())){newUser.setPhoto(file.get().getOriginalFilename());}
-
-
         try {
             if(!(file.isEmpty())){fileStorageService.uploadFile(file.get());}
             if(!(file.isEmpty())){fileStorageService.updateFile(file.get(),username);}
@@ -66,9 +59,6 @@ public class UserController {
         }
     }
 
-
-
-
     @GetMapping(value = "")
     public ResponseEntity<Object> getUsers() {
         return ResponseEntity.ok().body(userService.getUsers());
@@ -79,46 +69,15 @@ public class UserController {
         return ResponseEntity.ok().body(userService.getUser(username));
     }
 
-
-//    @PostMapping(value = "")
-//    public ResponseEntity<Object> createUser(@RequestBody User user) {
-//        if (userRepository.existsById(user.getUsername())){
-////            To Do make User exist exception
-//            throw new BadRequestException();}
-//        String newUsername = userService.createUser(user);
-//
-//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
-//                .buildAndExpand(newUsername).toUri();
-//
-//        return ResponseEntity.created(location).build();
-//    }
-
     @PostMapping(value = "")
     public ResponseEntity<Object> createUser(@RequestBody User user) {
         if (userRepository.existsById(user.getUsername())){
-//            To Do make User exist exception
             throw new BadRequestException();}
         String newUsername = userService.createUser(user);
-
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
                 .buildAndExpand(newUsername).toUri();
-
         return ResponseEntity.created(location).build();
     }
-
-
-
-//    @PutMapping(value = "/{username}")
-//    public ResponseEntity<Object> updateUser(@PathVariable("username") String username, @RequestBody User user) {
-//        userService.updateUser(username, user);
-//        return ResponseEntity.noContent().build();
-//    }
-
-//    @GetMapping(value = "/{username}/password")
-//    @ResponseStatus(HttpStatus.OK)
-//    public String hello() {
-//        return "Hello password";
-//    }
 
     @PutMapping(value = "/{username}/password")
     public ResponseEntity<Object> updatePassword(@PathVariable("username") String username, @RequestBody User user) {
@@ -154,5 +113,4 @@ public class UserController {
         userService.removeAuthority(username, authority);
         return ResponseEntity.noContent().build();
     }
-
 }

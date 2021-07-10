@@ -27,11 +27,6 @@ class CustomUserDetailsServiceTest {
     @Mock
     UserService userService;
 
-//    @BeforeEach
-//    public void setup() {
-//        customUserDetailsService = new CustomUserDetailsService(userRepository);
-//    }
-
     @Test
     void loadUserByUsername() {
         User testUser = new User("testUsername","testPassword","testEmail","testPhoto","testBirthDate","testFirstName",

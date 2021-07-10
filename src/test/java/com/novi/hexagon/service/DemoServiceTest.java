@@ -24,26 +24,17 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class DemoServiceTest {
 
-//    @Autowired
-//    private DemoService testDemoService = new DemoService();
-
     @InjectMocks
     private DemoService demoService;
 
     @Mock
     private FileStorageService fileStorageService;
 
-
     @Mock
     DemoRepository demoRepository;
 
     @Mock
     UserRepository userRepository;
-
-//    @BeforeEach
-//    public void setup() {
-//        demoService = new DemoService(demoRepository, userRepository);
-//    }
 
     @Test
     void addDemo() {
@@ -78,9 +69,6 @@ class DemoServiceTest {
         when(demoRepository.existsByDemo(testDemo.getDemo())).thenReturn(true);
         when(demoRepository.findByDemo(testDemo.getDemo())).thenReturn(testDemo);
         demoService.deleteDemo(testDemo.getDemo());
-//        when(fileStorageService.deleteFile(testDemo.getDemo())).thenReturn(true);;
-//        demoService.deleteDemo(testDemo.getDemo());
-//        when(fileStorageService.deleteFile(testDemo.getDemo())).thenReturn(true);
         verify(demoRepository).deleteByDemo(testDemo.getDemo());
         verify(fileStorageService).deleteFile(testDemo.getCover());
         verify(fileStorageService).deleteFile(testDemo.getDemo());

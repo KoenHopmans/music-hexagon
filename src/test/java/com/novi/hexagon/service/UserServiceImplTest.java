@@ -34,7 +34,6 @@ class UserServiceImplTest {
     @Mock
     PasswordEncoder passwordEncoder;
 
-
     @BeforeEach
     public void setup() {
     }
@@ -75,17 +74,6 @@ class UserServiceImplTest {
         userService.updateUser(testUser.getUsername(),testUser);
         verify(userRepository).save(testUser);
     }
-
-
-//    @Test
-//    void testUpdatePassword() {
-//        User testUser = new User("testUsername");
-//        when(userRepository.existsById(testUser.getUsername())).thenReturn(true);
-//        when(userRepository.findById(testUser.getUsername())).thenReturn(java.util.Optional.of(testUser));
-//        when(passwordEncoder.encode(testUser.getPassword())).thenReturn(testUser.getPassword());
-//        userService.updatePassword(testUser.getUsername(),testUser);
-//        verify(userRepository).save(testUser);
-//    }
 
     @Captor
     ArgumentCaptor<User> userCaptor;

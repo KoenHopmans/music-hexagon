@@ -91,5 +91,4 @@ public class FeedbackTest {
         boolean actualRead = this.feedback.isRead();
         assertEquals(expectRead, actualRead);
     }
-
 }

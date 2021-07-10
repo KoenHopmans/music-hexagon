@@ -8,6 +8,9 @@ import java.io.Serializable;
 @Table(name = "comments")
 public class Comment implements Serializable {
 
+    public Comment() {
+    }
+
     public Comment(String demo, String comment, String date, String messenger) {
         this.demo = demo;
         this.comment = comment;
@@ -34,9 +37,6 @@ public class Comment implements Serializable {
 
     @Column
     private boolean read ;
-
-    public Comment() {
-    }
 
     public Comment(String demo, String comment) { this.demo = demo; this.comment = comment;}
     public String getDemo() {  return demo;}public void setDemo(String demo) {  this.demo = demo;}

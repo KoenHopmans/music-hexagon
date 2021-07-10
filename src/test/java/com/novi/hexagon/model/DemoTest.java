@@ -16,7 +16,6 @@ class DemoTest {
         this.demo = new Demo("testUsername","testDemo", "testCover", "testArtist", "testTrackName");
     }
 
-
     @Test
     void testGetUsername(){
         String expectUsername = "testUsername";
@@ -31,7 +30,6 @@ class DemoTest {
         String actualUsername = this.demo.getUsername();
         assertEquals(expectUsername, actualUsername);
     }
-
 
     @Test
     void testGetDemo(){

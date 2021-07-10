@@ -1,7 +1,6 @@
 package com.novi.hexagon.config;
 
 import com.novi.hexagon.filter.JwtRequestFilter;
-
 import com.novi.hexagon.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -51,7 +50,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/v1/authenticate").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/v1/producers/**").hasRole("ADMIN")
                 // ALL ENDPOINTS
 //                .antMatchers(HttpMethod.GET,"/api/v1/authenticated").hasRole("ADMIN")
 //                .antMatchers(HttpMethod.POST,"/api/v1/authenticate").hasRole("ADMIN")
@@ -62,8 +60,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers(HttpMethod.POST,"/api/v1/{fileName}/comment").hasRole("ADMIN")
 //                .antMatchers(HttpMethod.PUT,"/api/v1/{fileName}/comment").hasRole("ADMIN")
 //                .antMatchers(HttpMethod.DELETE,"/api/v1/{fileName}/comment").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.POST,"/api/v1/{fileName}/feedback").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.PUT,"/api/v1/{fileName}/feedback").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST,"/api/v1/{fileName}/feedback").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT,"/api/v1/{fileName}/feedback").hasRole("ADMIN")
 //                .antMatchers(HttpMethod.DELETE,"/api/v1/{fileName}/feedback").hasRole("ADMIN")
 //                .antMatchers(HttpMethod.GET,"/api/v1/downloadFile/{fileName:.+}").hasRole("ADMIN")
 //                .antMatchers(HttpMethod.GET,"/").hasRole("ADMIN")
@@ -71,11 +69,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers(HttpMethod.GET,"/api/v1/users/{username}").hasRole("ADMIN")
 //                .antMatchers(HttpMethod.POST,"/api/v1/users/{username}").hasRole("ADMIN")
 //                .antMatchers(HttpMethod.PUT,"/api/v1/users/{username}").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.DELETE,"/api/v1/users/{username}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE,"/api/v1/users/{username}").hasRole("ADMIN")
 //                .antMatchers(HttpMethod.PUT,"/api/v1/users/{username}/password").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.GET,"/api/v1/users/{username}/authorities").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.POST,"/api/v1/users/{username}/authorities").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.DELETE,"/api/v1/users/{username}/authorities/{authority}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET,"/api/v1/users/{username}/authorities").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST,"/api/v1/users/{username}/authorities").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE,"/api/v1/users/{username}/authorities/{authority}").hasRole("ADMIN")
                 // END
                 .anyRequest().permitAll()
                 .and()

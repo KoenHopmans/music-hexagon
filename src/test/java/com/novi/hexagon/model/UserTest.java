@@ -17,7 +17,6 @@ public class UserTest {
                 "testLastName","testAbout","testLocation","testGender");
     }
 
-
     @Test
     void testGetUsername(){
         String expectUsername = "testUsername";
@@ -168,11 +167,4 @@ public class UserTest {
         String actualGender = this.user.getGender();
         assertEquals(expectGender, actualGender);
     }
-//    @Test
-//    void testGetPassword(){
-//        String expectPassword = "testPassword";
-//        String actualPassword = this.user.getPassword();
-//        assertEquals(expectPassword, actualPassword);
-//    }
-
 }

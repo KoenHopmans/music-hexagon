@@ -4,6 +4,7 @@ import com.novi.hexagon.model.Demo;
 import com.novi.hexagon.model.User;
 import com.novi.hexagon.property.FileStorageProperties;
 import com.novi.hexagon.repository.UserRepository;
+import com.novi.hexagon.service.DemoService;
 import com.novi.hexagon.service.UserService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class HexagonApplication {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	DemoService demoService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(HexagonApplication.class, args);
@@ -62,6 +66,20 @@ public class HexagonApplication {
 			userService.addAuthority("peter_anema", "ROLE_ADMIN");
 			userService.addAuthority("nova_eeken", "ROLE_ADMIN");
 			userService.addAuthority("don_diablo", "ROLE_ADMIN");
+			demoService.addDemo(new Demo("don_diablo","La-La-Land.mp3","la-la-land.jpg","Don Diabo","La La Land"));
+			demoService.addDemo(new Demo("peter_anema","bach.mp3","bach.jpg","DJ Peter","Das Air"));
+			demoService.addDemo(new Demo("malou_allertz","How-i-like-it.mp3","island.jpg","DJ Allertzo","How I like " +
+					"it"));
+			demoService.addDemo(new Demo("malou_allertz","bull.mp3","bull.jpg","DJ Allertzo","Black Bull"));
+			demoService.addDemo(new Demo("pieter_van_dorst","future.mp3","future.jpg","DJ Pieter","Future"));
+			demoService.addDemoComment("How-i-like-it.mp3","Dit is mijn eerste nummer, Wat vinden jullie ervan?",
+					"2021-07-10","malou_allertz");
+			demoService.addDemoFeedback("How-i-like-it.mp3","Mooi gemaakt je hebt echt talent!",
+					"2021-07-11","don_diablo");
+			demoService.addDemoComment("bach.mp3","Prachtig Peter, dit is ook mijn favoriete muziek!",
+					"2021-07-09","nova_eeken");
+			demoService.addDemoFeedback("future.mp3","Gaaf, er zit een goede opbouw in en de beat is echt fantastisch.",
+					"2021-06-28","don_diablo");
 		};
 	}
 }

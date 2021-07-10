@@ -34,6 +34,9 @@ public class UserServiceImpl implements com.novi.hexagon.service.UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    public UserServiceImpl() {
+    }
+
     @Override
     public Collection<User> getUsers() {
         return userRepository.findAll();

@@ -1,43 +1,40 @@
 package com.novi.hexagon.controller;
+
 import com.novi.hexagon.exceptions.BadRequestException;
 import com.novi.hexagon.model.Comment;
 import com.novi.hexagon.model.Demo;
-//import com.novi.hexagon.model.Producer;
-import com.novi.hexagon.model.User;
-import com.novi.hexagon.repository.DemoRepository;
 import com.novi.hexagon.service.DemoService;
 import com.novi.hexagon.service.FileStorageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.net.URI;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins={"*"})
 @RequestMapping("/api/v1/")
 public class DemoController {
 
+        private static final Logger logger = LoggerFactory.getLogger(DemoController.class);
+
     @Autowired
     FileStorageService fileStorageService;
 
     @Autowired
-    private DemoRepository demoRepository;
-
-    @Autowired
     DemoService demoService;
 
-//    @PostMapping(value = "/demo-upload")
     @PostMapping(value = "/demo")
     public ResponseEntity<Object> addDemo(@RequestParam(value = "username" ) String username,
                                           @RequestParam(value = "artist" ,required = false) String artist,
-//                                          @RequestParam(value = "feedback" ,required = false) String feedback,
                                           @RequestParam(value = "comment" ,required = false) String comment,
                                           @RequestParam(value = "date" ,required = false) String date,
                                           @RequestParam(value = "trackName" ,required = false) String trackName,
@@ -50,18 +47,12 @@ public class DemoController {
             Demo demo = new Demo();
             demo.setUsername(username);
             demo.setArtist(artist);
-//            demo.setFeedback(feedback);
             if(!(comment==null)){demo.addComment(myComment);}
             demo.setTrackName(trackName);
             demo.setDemo(musicFile.getOriginalFilename());
             if(!(cover==null)){demo.setCover(cover.getOriginalFilename());}
             demoService.addDemo(demo);
-            System.out.println("FILE-NAME " + musicFile.getOriginalFilename());
-            System.out.println("ARTIST " + artist);
-//            System.out.println("FEEDBACK " + feedback);
-            System.out.println("USERNAME " + username);
             if(!(cover==null)){ System.out.println("COVER " + cover.getOriginalFilename());}
-
             return ResponseEntity.noContent().build();
         }
         catch (Exception ex) {
@@ -82,29 +73,8 @@ public class DemoController {
         return ResponseEntity.noContent().build();
     }
 
-//    @GetMapping(value = "/demo-update/{fileName}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public String hello() {
-//        return "Hello Update";
-//    }
-
-//    @PutMapping(value = "/demo-update/{fileName}")
-//    public ResponseEntity<Object> updateDemo(@PathVariable("fileName") String fileName, @RequestBody Demo demo)  {
-//        try {
-//
-//            demoService.updateDemo(demo, fileName);
-//
-//            return ResponseEntity.noContent().build();
-//        }
-//        catch (Exception ex) {
-//            throw new BadRequestException();
-//        }
-//    }
-
-//    @PutMapping(value = "/demo-update/{fileName}")
     @PutMapping(value = "/demo/{fileName}")
     public ResponseEntity<Object> updateDemo(@PathVariable("fileName") String fileName,
-//                                             @RequestParam(value = "username" ) String username,
                                              @RequestParam(value = "trackName" ,required = false) String trackName,
                                              @RequestParam(value = "artist" ,required = false) String artist,
                                              @RequestParam(value = "file" ,required = false) MultipartFile file)
@@ -117,22 +87,13 @@ public class DemoController {
             demo.setTrackName(trackName);
             if(!(file==null)){demo.setCover(file.getOriginalFilename());
                 System.out.println("CHANGE FILE");}
-
             demoService.updateDemo(demo, fileName);
-
             return ResponseEntity.noContent().build();
         }
         catch (Exception ex) {
             throw new BadRequestException();
         }
     }
-
-//    @GetMapping(value = "/{fileName}/comment")
-//    @ResponseStatus(HttpStatus.OK)
-//    public String Comment() {
-//        return "Hello Update";
-//    }
-
 
     @PostMapping(value = "/{fileName}/comment")
     public ResponseEntity<Object> addComment(@PathVariable("fileName") String fileName,
@@ -208,5 +169,23 @@ public class DemoController {
         } catch (Exception ex) {
             throw new BadRequestException();
         }
+    }
+
+    @GetMapping("/downloadFile/{fileName:.+}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
+        Resource resource = fileStorageService.loadFileAsResource(fileName);
+        String contentType = null;
+        try {
+            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+        } catch (IOException ex) {
+            logger.info("Could not determine file type.");
+        }
+        if (contentType == null) {
+            contentType = "application/octet-stream";
+        }
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
     }
 }

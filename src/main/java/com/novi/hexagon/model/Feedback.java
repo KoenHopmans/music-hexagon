@@ -1,7 +1,5 @@
 package com.novi.hexagon.model;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -9,6 +7,9 @@ import java.io.Serializable;
 
 @Table(name = "feedbacks")
 public class Feedback implements Serializable {
+
+    public Feedback() {
+    }
 
     public Feedback(String demo, String feedback, String date, String messenger) {
         this.demo = demo;
@@ -39,10 +40,6 @@ public class Feedback implements Serializable {
     @Column
     private boolean read ;
 
-    public Feedback() {
-    }
-
-    public Feedback(String demo, String feedback) { this.demo = demo; this.feedback = feedback;}
     public String getDemo() {  return demo;}public void setDemo(String demo) {  this.demo = demo;}
     public String getFeedback() {  return feedback;}
     public void setFeedback(String feedback) {  this.feedback = feedback;}
@@ -52,6 +49,4 @@ public class Feedback implements Serializable {
     public void setDate(String date) {this.date = date;}
     public String getMessenger() {return messenger;}
     public void setMessenger(String messenger) {this.messenger = messenger;}
-
-
 }

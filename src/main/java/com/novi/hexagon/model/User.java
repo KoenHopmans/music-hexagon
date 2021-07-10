@@ -8,6 +8,18 @@ import java.util.Set;
 @Table(name = "users")
 public class User {
 
+    public User() {
+    }
+
+    public User(String username) {
+        this.username = username;
+    }
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
     public User(String username, String password, String email, String photo, String birthDate, String firstName,
                 String lastName, String about, String location, String gender) {
         this.username = username;
@@ -21,12 +33,6 @@ public class User {
         this.location = location;
         this.gender = gender;
     }
-
-    public User() {
-
-    }
-
-
 
     @Id
     @Column(nullable = false, unique = true)
@@ -65,8 +71,6 @@ public class User {
     @Column
     private String gender;
 
-
-
     @OneToMany(
             targetEntity = com.novi.hexagon.model.Authority.class,
             mappedBy = "username",
@@ -75,7 +79,6 @@ public class User {
             fetch = FetchType.EAGER)
     private Set<com.novi.hexagon.model.Authority> authorities = new HashSet<>();
 
-
     @OneToMany(
             targetEntity = com.novi.hexagon.model.Demo.class,
             mappedBy = "username",
@@ -83,16 +86,6 @@ public class User {
             orphanRemoval = true,
             fetch = FetchType.EAGER)
     private Set<com.novi.hexagon.model.Demo> demos = new HashSet<>();
-
-    public User(String username) {
-        this.username = username;
-    }
-
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
 
     public String getUsername() { return username; }
     public void setUsername(String username) {
@@ -112,8 +105,6 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-//    public boolean isEnabled() { return enabled;}
-//    public void setEnabled(boolean enabled) { this.enabled = enabled; }
     public String getApikey() { return apikey; }
     public void setApikey(String apikey) { this.apikey = apikey; }
     public String getEmail() { return email; }
@@ -124,7 +115,6 @@ public class User {
     public void setPhoto(String phoneNumber) { this.photo = phoneNumber; }
     public String getBirthDate() { return birthDate; }
     public void setBirthDate(String birthDate) { this.birthDate = birthDate; }
-
     public Set<Authority> getAuthorities() { return authorities; }
     public void addAuthority(Authority authority) {
         this.authorities.add(authority);
@@ -132,7 +122,6 @@ public class User {
     public void removeAuthority(Authority authority) {
         this.authorities.remove(authority);
     }
-
     public Set<Demo> getDemos() { return demos; }
     public void addDemo(Demo demo) {
         this.demos.add(demo);
@@ -140,5 +129,4 @@ public class User {
     public void removeDemo(Demo demo) {
         this.demos.remove(demo);
     }
-
 }

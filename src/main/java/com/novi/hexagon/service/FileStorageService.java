@@ -7,7 +7,6 @@ import com.novi.hexagon.model.User;
 import com.novi.hexagon.property.FileStorageProperties;
 import com.novi.hexagon.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;

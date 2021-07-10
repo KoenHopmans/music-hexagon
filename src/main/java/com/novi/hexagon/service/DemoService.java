@@ -47,27 +47,14 @@ public class DemoService {
         demoRepository.save(goodDemo);
     }
 
-
-
     public Demo getDemoByFilename(String filename){
         if (!demoRepository.existsByDemo(filename)) throw new UsernameNotFoundException(filename);
         Demo demo = demoRepository.findByDemo(filename);
         System.out.println(demo);
         return demo;
     }
-// Oude variant die werkt
-//    public void deleteDemo(String filename) throws IOException {
-//
-//     if (!demoRepository.existsByDemo(filename)) throw new RecordNotFoundException();
-//    Demo demo = demoRepository.findByDemo(filename);
-//    String cover = demo.getCover();
-//        demoRepository.deleteByDemo(filename);
-//        fileStorageService.deleteFile(filename);
-//        fileStorageService.deleteFile(cover);
-//    }
 
     public void deleteDemo(String filename) {
-
         if (!demoRepository.existsByDemo(filename)) throw new RecordNotFoundException();
         Demo demo = demoRepository.findByDemo(filename);
         demoRepository.deleteByDemo(filename);
@@ -84,24 +71,12 @@ public class DemoService {
         }
     }
 
-
-
-
-
-//    public void addComment(String fileName, String comment) {
-//
-//        Demo demo = demoRepository.findByDemo(fileName).get();
-////       demo.addComments(new Comment(username, authority));
-//        demoRepository.save(demo);
-//    }
-
     public void addDemoComment(String fileName, String comment, String date, String messenger) {
         if (!demoRepository.existsByDemo(fileName)) throw new UsernameNotFoundException(fileName);
         Demo demo = demoRepository.findByDemo(fileName);
         demo.addComment(new Comment(fileName, comment, date, messenger));
         demoRepository.save(demo);
     }
-
 
     public void addDemoFeedback(String fileName, String feedback, String date, String messenger) {
         if (!demoRepository.existsByDemo(fileName)) throw new UsernameNotFoundException(fileName);
@@ -149,5 +124,4 @@ public class DemoService {
         demo.addComment(commentToUpdate);
         demoRepository.save(demo);
     }
-
 }

@@ -2,15 +2,12 @@ package com.novi.hexagon.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "Demos")
 public class Demo implements Serializable {
-
 
     @Column(nullable = false)
     private String username;
@@ -22,16 +19,11 @@ public class Demo implements Serializable {
     @Column
     private String cover;
 
-
     @Column
     private String artist;
 
-
     @Column
     private String trackName;
-
-
-
 
     @OneToMany(
             targetEntity = com.novi.hexagon.model.Comment.class,
@@ -65,8 +57,6 @@ public class Demo implements Serializable {
         this.trackName = trackName;
     }
 
-
-
     public String getUsername() {
         return username;
     }
@@ -86,11 +76,9 @@ public class Demo implements Serializable {
     public String getTrackName() { return trackName;}
     public void setTrackName(String trackName) { this.trackName = trackName;}
     public Set<Comment> getComments() { return comments; }
-    public void setComments(Set<Comment> comments) {this.comments = comments;}
     public void addComment(Comment comment) { this.comments.add(comment); }
     public void removeComment(Comment comment) { this.comments.remove(comment); }
     public Set<Feedback> getFeedbacks() { return feedbacks; }
-    public void setFeedbacks(Set<Feedback> feedbacks) {this.feedbacks = feedbacks;}
     public void addFeedback(Feedback feedback) { this.feedbacks.add(feedback); }
     public void removeFeedback(Feedback feedback) { this.feedbacks.remove(feedback); }
 }

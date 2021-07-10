@@ -45,6 +45,4 @@ public class AuthorityTest {
         String actualAuthority = this.authority.getAuthority();
         assertEquals(expectAuthority, actualAuthority);
     }
-
-
 }
