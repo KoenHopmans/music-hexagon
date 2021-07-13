@@ -4,14 +4,12 @@ import com.novi.hexagon.exceptions.RecordNotFoundException;
 import com.novi.hexagon.exceptions.UsernameNotFoundException;
 import com.novi.hexagon.model.Authority;
 import com.novi.hexagon.model.User;
-import com.novi.hexagon.repository.DemoRepository;
 import com.novi.hexagon.repository.UserRepository;
 import com.novi.hexagon.utils.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
@@ -25,9 +23,6 @@ public class UserServiceImpl implements com.novi.hexagon.service.UserService {
 
     @Autowired
     private UserRepository userRepository;
-
-//    @Autowired
-//    private AuthorityRepository authorityRepository;
 
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -48,20 +43,6 @@ public class UserServiceImpl implements com.novi.hexagon.service.UserService {
         return user;
     }
 
-//    @Override
-//    public boolean userExists(String username) {
-//        return userRepository.existsById(username);
-//    }
-
-//    @Override
-//    public String createUser(User user) {
-//        String randomString = RandomStringGenerator.generateAlphaNumeric(20);
-//        user.setApikey(randomString);
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        User newUser = userRepository.save(user);
-//        return newUser.getUsername();
-//    }
-
     @Override
     public String createUser(User user) {
         String randomString = RandomStringGenerator.generateAlphaNumeric(20);
@@ -70,7 +51,6 @@ public class UserServiceImpl implements com.novi.hexagon.service.UserService {
         User newUser = userRepository.save(user);
         return newUser.getUsername();
     }
-
 
     @Override
     public void deleteUser(String username) {
@@ -81,7 +61,6 @@ public class UserServiceImpl implements com.novi.hexagon.service.UserService {
     public void updateUser(String username, User newUser) {
         if (!userRepository.existsById(username)) throw new RecordNotFoundException();
         User user = userRepository.findById(username).get();
-//        user.setPassword(newUser.getPassword());
         user.setEmail(newUser.getEmail());
         user.setBirthDate(newUser.getBirthDate());
         user.setLocation(newUser.getLocation());
@@ -102,11 +81,9 @@ public class UserServiceImpl implements com.novi.hexagon.service.UserService {
         System.out.println("TEST");
         if (!userRepository.existsById(username)) throw new RecordNotFoundException();
         User user = userRepository.findById(username).get();
-//        System.out.println(user.getPassword());
         user.setPassword(passwordEncoder.encode(newUser.getPassword()));
         userRepository.save(user);
     }
-
 
     @Override
     public Set<Authority> getAuthorities(String username) {
@@ -131,5 +108,4 @@ public class UserServiceImpl implements com.novi.hexagon.service.UserService {
         user.removeAuthority(authorityToRemove);
         userRepository.save(user);
     }
-
 }
