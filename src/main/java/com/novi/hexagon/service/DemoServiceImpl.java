@@ -38,9 +38,10 @@ public class DemoServiceImpl implements com.novi.hexagon.service.DemoService{
         userRepository.save(user);
     }
 
+
     @Override
     public void updateDemo(Demo newDemo, String fileName){
-        if (!demoRepository.existsByDemo(fileName)) throw new UsernameNotFoundException(fileName);
+        if (!demoRepository.existsByDemo(fileName)) throw new RecordNotFoundException();
         Demo demo = demoRepository.findByDemo(fileName);
         Demo goodDemo = demo;
         goodDemo.setArtist(newDemo.getArtist());
@@ -77,7 +78,7 @@ public class DemoServiceImpl implements com.novi.hexagon.service.DemoService{
 
     @Override
     public void addDemoComment(String fileName, String comment, String date, String messenger) {
-        if (!demoRepository.existsByDemo(fileName)) throw new UsernameNotFoundException(fileName);
+        if (!demoRepository.existsByDemo(fileName)) throw new RecordNotFoundException();
         Demo demo = demoRepository.findByDemo(fileName);
         demo.addComment(new Comment(fileName, comment, date, messenger));
         demoRepository.save(demo);
@@ -85,7 +86,7 @@ public class DemoServiceImpl implements com.novi.hexagon.service.DemoService{
 
     @Override
     public void addDemoFeedback(String fileName, String feedback, String date, String messenger) {
-        if (!demoRepository.existsByDemo(fileName)) throw new UsernameNotFoundException(fileName);
+        if (!demoRepository.existsByDemo(fileName)) throw new RecordNotFoundException();
         Demo demo = demoRepository.findByDemo(fileName);
         demo.addFeedback(new Feedback(fileName, feedback, date, messenger));
         demoRepository.save(demo);
@@ -93,7 +94,7 @@ public class DemoServiceImpl implements com.novi.hexagon.service.DemoService{
 
     @Override
     public void deleteFeedback(String fileName, String feedback) {
-        if (!demoRepository.existsByDemo(fileName)) throw new UsernameNotFoundException(fileName);
+        if (!demoRepository.existsByDemo(fileName)) throw new RecordNotFoundException();
         Demo demo = demoRepository.findByDemo(fileName);
         Feedback feedbackToRemove =
                 demo.getFeedbacks().stream().filter((a) -> a.getFeedback().equalsIgnoreCase(feedback)).findAny().get();
@@ -103,7 +104,7 @@ public class DemoServiceImpl implements com.novi.hexagon.service.DemoService{
 
     @Override
     public void deleteComment(String fileName, String comment) {
-        if (!demoRepository.existsByDemo(fileName)) throw new UsernameNotFoundException(fileName);
+        if (!demoRepository.existsByDemo(fileName)) throw new RecordNotFoundException();
         Demo demo = demoRepository.findByDemo(fileName);
         Comment commentToRemove =
                 demo.getComments().stream().filter((a) -> a.getComment().equalsIgnoreCase(comment)).findAny().get();
@@ -113,7 +114,7 @@ public class DemoServiceImpl implements com.novi.hexagon.service.DemoService{
 
     @Override
     public void updateFeedback(String fileName, String feedback) {
-        if (!demoRepository.existsByDemo(fileName)) throw new UsernameNotFoundException(fileName);
+        if (!demoRepository.existsByDemo(fileName)) throw new RecordNotFoundException();
         Demo demo = demoRepository.findByDemo(fileName);
         Feedback feedbackToUpdate =
                 demo.getFeedbacks().stream().filter((a) -> a.getFeedback().equalsIgnoreCase(feedback)).findAny().get();
@@ -125,7 +126,7 @@ public class DemoServiceImpl implements com.novi.hexagon.service.DemoService{
 
     @Override
     public void updateComment(String fileName, String comment) {
-        if (!demoRepository.existsByDemo(fileName)) throw new UsernameNotFoundException(fileName);
+        if (!demoRepository.existsByDemo(fileName)) throw new RecordNotFoundException();
         Demo demo = demoRepository.findByDemo(fileName);
         Comment commentToUpdate =
                 demo.getComments().stream().filter((a) -> a.getComment().equalsIgnoreCase(comment)).findAny().get();

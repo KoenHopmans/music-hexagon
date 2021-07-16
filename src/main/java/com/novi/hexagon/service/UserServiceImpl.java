@@ -39,9 +39,10 @@ public class UserServiceImpl implements com.novi.hexagon.service.UserService {
 
     @Override
     public Optional<User> getUser(String username) {
+        if (!userRepository.existsById(username)) throw new RecordNotFoundException();
         Optional<User> user = userRepository.findById(username);
         return user;
-    }
+}
 
     @Override
     public String createUser(User user) {
@@ -54,6 +55,7 @@ public class UserServiceImpl implements com.novi.hexagon.service.UserService {
 
     @Override
     public void deleteUser(String username) {
+        if (!userRepository.existsById(username)) throw new RecordNotFoundException();
         userRepository.deleteByUsername(username);
     }
 

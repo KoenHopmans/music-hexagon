@@ -32,6 +32,12 @@ public class DemoController {
     @Autowired
     DemoService demoService;
 
+    @GetMapping("demo/{filename}")
+    public ResponseEntity<Object> getDemoByFilename(@PathVariable("filename") String filename){
+        Demo demo = this.demoService.getDemoByFilename(filename);
+        return new ResponseEntity<>(demo, HttpStatus.OK);
+    }
+
     @PostMapping(value = "/demo")
     public ResponseEntity<Object> addDemo(@RequestParam(value = "username" ) String username,
                                           @RequestParam(value = "artist" ,required = false) String artist,
@@ -53,24 +59,11 @@ public class DemoController {
             if(!(cover==null)){demo.setCover(cover.getOriginalFilename());}
             demoService.addDemo(demo);
             if(!(cover==null)){ System.out.println("COVER " + cover.getOriginalFilename());}
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok().build();
         }
         catch (Exception ex) {
             throw new BadRequestException();
         }
-    }
-
-    @GetMapping("demo/{filename}")
-    public ResponseEntity<Object> getDemoByFilename(@PathVariable("filename") String filename){
-        Demo demo = this.demoService.getDemoByFilename(filename);
-        return new ResponseEntity<>(demo, HttpStatus.OK);
-    }
-
-    @DeleteMapping(value = "demo/{filename}")
-    public ResponseEntity<Object> deleteDemoByFilename(@PathVariable("filename") String filename) throws IOException {
-        demoService.deleteDemo(filename);
-        fileStorageService.deleteFile(filename);
-        return ResponseEntity.noContent().build();
     }
 
     @PutMapping(value = "/demo/{fileName}")
@@ -88,12 +81,20 @@ public class DemoController {
             if(!(file==null)){demo.setCover(file.getOriginalFilename());
                 System.out.println("CHANGE FILE");}
             demoService.updateDemo(demo, fileName);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok().build();
         }
         catch (Exception ex) {
             throw new BadRequestException();
         }
     }
+
+    @DeleteMapping(value = "demo/{filename}")
+    public ResponseEntity<Object> deleteDemoByFilename(@PathVariable("filename") String filename) throws IOException {
+        demoService.deleteDemo(filename);
+        fileStorageService.deleteFile(filename);
+        return ResponseEntity.noContent().build();
+    }
+
 
     @PostMapping(value = "/{fileName}/comment")
     public ResponseEntity<Object> addComment(@PathVariable("fileName") String fileName,
@@ -103,7 +104,7 @@ public class DemoController {
             String date = (String) fields.get("date");
             String messenger = (String) fields.get("messenger");
             demoService.addDemoComment(fileName, comment, date, messenger);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok().build();
         } catch (Exception ex) {
             throw new BadRequestException();
         }
@@ -117,7 +118,7 @@ public class DemoController {
             String date = (String) fields.get("date");
             String messenger = (String) fields.get("messenger");
             demoService.addDemoFeedback(fileName, feedback, date, messenger);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok().build();
         } catch (Exception ex) {
             throw new BadRequestException();
         }
@@ -153,7 +154,7 @@ public class DemoController {
         try {
             String feedback = (String) fields.get("feedback");
             demoService.updateFeedback(fileName, feedback);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok().build();
         } catch (Exception ex) {
             throw new BadRequestException();
         }
@@ -165,7 +166,7 @@ public class DemoController {
         try {
             String comment = (String) fields.get("comment");
             demoService.updateComment(fileName, comment);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok().build();
         } catch (Exception ex) {
             throw new BadRequestException();
         }

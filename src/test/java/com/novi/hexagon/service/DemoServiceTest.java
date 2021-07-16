@@ -1,5 +1,7 @@
 package com.novi.hexagon.service;
 
+import com.novi.hexagon.exceptions.RecordNotFoundException;
+import com.novi.hexagon.exceptions.UsernameNotFoundException;
 import com.novi.hexagon.model.Comment;
 import com.novi.hexagon.model.Demo;
 import com.novi.hexagon.model.Feedback;
@@ -25,7 +27,7 @@ import static org.mockito.Mockito.when;
 class DemoServiceTest {
 
     @InjectMocks
-    private DemoService demoService;
+    private DemoServiceImpl demoService;
 
     @Mock
     private FileStorageService fileStorageService;
@@ -37,7 +39,7 @@ class DemoServiceTest {
     UserRepository userRepository;
 
     @Test
-    void addDemo() {
+    void testAddDemo() {
         Demo testDemo = new Demo("testUsername","testDemo", "testCover", "testArtist", "testTrackName");;
         User testUser = new User("testUsername");
         when(userRepository.existsById(testUser.getUsername())).thenReturn(true);
@@ -47,7 +49,15 @@ class DemoServiceTest {
     }
 
     @Test
-    void updateDemo() {
+    void testAddDemo_NotFoundException() {
+        Demo testDemo = new Demo("testUsername","testDemo", "testCover", "testArtist", "testTrackName");;
+        User testUser = new User("testUsername");
+        when(userRepository.existsById(testUser.getUsername())).thenReturn(false);
+        assertThrows(UsernameNotFoundException.class,()->{demoService.addDemo(testDemo);;});
+    }
+
+    @Test
+    void testUpdateDemo() {
         Demo testDemo = new Demo("testUsername","testDemo", "testCover", "testArtist", "testTrackName");;
         when(demoRepository.existsByDemo(testDemo.getDemo())).thenReturn(true);
         when(demoRepository.findByDemo(testDemo.getDemo())).thenReturn(testDemo);
@@ -56,7 +66,7 @@ class DemoServiceTest {
     }
 
     @Test
-    void getDemoByFilename() {
+    void testGetDemoByFilename() {
         Demo testDemo = new Demo("testUsername","testDemo", "testCover", "testArtist", "testTrackName");;
         when(demoRepository.existsByDemo(testDemo.getDemo())).thenReturn(true);
         demoService.getDemoByFilename(testDemo.getDemo());
@@ -64,7 +74,14 @@ class DemoServiceTest {
     }
 
     @Test
-    void deleteDemo() throws IOException {
+    void testGetDemoByFilename_NotFoundException() {
+        Demo testDemo = new Demo("testUsername","testDemo", "testCover", "testArtist", "testTrackName");;
+        when(demoRepository.existsByDemo(testDemo.getDemo())).thenReturn(false);
+        assertThrows(UsernameNotFoundException.class,()->{demoService.getDemoByFilename(testDemo.getDemo());});
+    }
+
+    @Test
+    void testDeleteDemo() throws IOException {
         Demo testDemo = new Demo("testUsername","testDemo", "testCover", "testArtist", "testTrackName");;
         when(demoRepository.existsByDemo(testDemo.getDemo())).thenReturn(true);
         when(demoRepository.findByDemo(testDemo.getDemo())).thenReturn(testDemo);
@@ -75,7 +92,14 @@ class DemoServiceTest {
     }
 
     @Test
-    void addDemoComment() {
+    void testDeleteDemo_NotFoundException() {
+        Demo testDemo = new Demo("testUsername","testDemo", "testCover", "testArtist", "testTrackName");;
+        when(demoRepository.existsByDemo(testDemo.getDemo())).thenReturn(false);
+        assertThrows(RecordNotFoundException.class,()->{demoService.deleteDemo(testDemo.getDemo());});
+    }
+
+    @Test
+    void testAddDemoComment() {
         Demo testDemo = new Demo("testUsername","testDemo", "testCover", "testArtist", "testTrackName");;
         when(demoRepository.existsByDemo(testDemo.getDemo())).thenReturn(true);
         when(demoRepository.findByDemo(testDemo.getDemo())).thenReturn(testDemo);
@@ -84,7 +108,18 @@ class DemoServiceTest {
     }
 
     @Test
-    void addDemoFeedback() {
+    void testAddDemoComment_NotFoundException() {
+        Demo testDemo = new Demo("testUsername","testDemo", "testCover", "testArtist", "testTrackName");;
+        String testComment = "testComment";
+        String testDate = "testDate";
+        String testMessenger = "testMessenger";
+        when(demoRepository.existsByDemo(testDemo.getDemo())).thenReturn(false);
+        assertThrows(RecordNotFoundException.class,
+                ()->{demoService.addDemoComment(testDemo.getDemo(),testComment,testDate,testMessenger);});
+    }
+
+    @Test
+    void testAddDemoFeedback() {
         Demo testDemo = new Demo("testUsername","testDemo", "testCover", "testArtist", "testTrackName");;
         when(demoRepository.existsByDemo(testDemo.getDemo())).thenReturn(true);
         when(demoRepository.findByDemo(testDemo.getDemo())).thenReturn(testDemo);
@@ -93,7 +128,39 @@ class DemoServiceTest {
     }
 
     @Test
-    void deleteFeedback() {
+    void testAddDemoFeedback_NotFoundException() {
+        Demo testDemo = new Demo("testUsername","testDemo", "testCover", "testArtist", "testTrackName");;
+        String testFeedback = "testFeedback";
+        String testDate = "testDate";
+        String testMessenger = "testMessenger";
+        when(demoRepository.existsByDemo(testDemo.getDemo())).thenReturn(false);
+        assertThrows(RecordNotFoundException.class,
+                ()->{demoService.addDemoFeedback(testDemo.getDemo(),testFeedback,testDate,testMessenger);});
+    }
+
+
+    @Test
+    void testDeleteComment() {
+        Demo testDemo = new Demo("testUsername","testDemo", "testCover", "testArtist", "testTrackName");;
+        Comment testComment = new Comment("testDemo", "testComment", "01/01/2021","testMessenger");
+        testDemo.addComment(testComment);
+        when(demoRepository.existsByDemo(testDemo.getDemo())).thenReturn(true);
+        when(demoRepository.findByDemo(testDemo.getDemo())).thenReturn(testDemo);
+        demoService.deleteComment(testDemo.getDemo(),testComment.getComment());
+        verify(demoRepository).save(testDemo);
+    }
+
+    @Test
+    void testDeleteComment_NotFoundException() {
+        Demo testDemo = new Demo("testUsername","testDemo", "testCover", "testArtist", "testTrackName");;
+        Comment testComment = new Comment("testDemo", "testComment", "01/01/2021","testMessenger");
+        when(demoRepository.existsByDemo(testDemo.getDemo())).thenReturn(false);
+        assertThrows(RecordNotFoundException.class,
+                ()->{demoService.deleteComment(testDemo.getDemo(),testComment.getComment());});
+    }
+
+    @Test
+    void testDeleteFeedback() {
         Demo testDemo = new Demo("testUsername","testDemo", "testCover", "testArtist", "testTrackName");;
         Feedback testFeedback = new Feedback("testDemo", "testFeedback", "01/01/2021","testMessenger");
         testDemo.addFeedback(testFeedback);
@@ -104,15 +171,36 @@ class DemoServiceTest {
     }
 
     @Test
-    void deleteComment() {
+    void testDeleteFeedback_NotFoundException() {
+        Demo testDemo = new Demo("testUsername","testDemo", "testCover", "testArtist", "testTrackName");;
+        Feedback testFeedback = new Feedback("testDemo", "testFeedback", "01/01/2021","testMessenger");
+        when(demoRepository.existsByDemo(testDemo.getDemo())).thenReturn(false);
+        assertThrows(RecordNotFoundException.class,
+                ()->{demoService.deleteFeedback(testDemo.getDemo(),testFeedback.getFeedback());});
+    }
+
+    @Test
+    void testUpdateComment() {
         Demo testDemo = new Demo("testUsername","testDemo", "testCover", "testArtist", "testTrackName");;
         Comment testComment = new Comment("testDemo", "testComment", "01/01/2021","testMessenger");
         testDemo.addComment(testComment);
         when(demoRepository.existsByDemo(testDemo.getDemo())).thenReturn(true);
         when(demoRepository.findByDemo(testDemo.getDemo())).thenReturn(testDemo);
-        demoService.deleteComment(testDemo.getDemo(),"testComment");
+        demoService.updateComment(testDemo.getDemo(),"testComment");
         verify(demoRepository).save(testDemo);
     }
+
+    @Test
+    void testUpdateComment_NotFoundException() {
+        Demo testDemo = new Demo("testUsername","testDemo", "testCover", "testArtist", "testTrackName");;
+        Comment testComment = new Comment("testDemo", "testComment", "01/01/2021","testMessenger");
+        testDemo.addComment(testComment);
+        when(demoRepository.existsByDemo(testDemo.getDemo())).thenReturn(false);
+        assertThrows(RecordNotFoundException.class,
+                ()->{demoService.updateComment(testDemo.getDemo(),"testComment");});
+    }
+
+
 
     @Test
     void updateFeedback() {
@@ -127,13 +215,12 @@ class DemoServiceTest {
     }
 
     @Test
-    void updateComment() {
+    void updateFeedback_NotFoundException() {
         Demo testDemo = new Demo("testUsername","testDemo", "testCover", "testArtist", "testTrackName");;
-        Comment testComment = new Comment("testDemo", "testComment", "01/01/2021","testMessenger");
-        testDemo.addComment(testComment);
-        when(demoRepository.existsByDemo(testDemo.getDemo())).thenReturn(true);
-        when(demoRepository.findByDemo(testDemo.getDemo())).thenReturn(testDemo);
-        demoService.updateComment(testDemo.getDemo(),"testComment");
-        verify(demoRepository).save(testDemo);
+        Feedback testFeedback = new Feedback("testDemo", "testComment", "01/01/2021","testMessenger");
+        testDemo.addFeedback(testFeedback);
+        when(demoRepository.existsByDemo(testDemo.getDemo())).thenReturn(false);
+        assertThrows(RecordNotFoundException.class,
+                ()->{demoService.updateFeedback(testDemo.getDemo(),"testFeedback");});
     }
 }

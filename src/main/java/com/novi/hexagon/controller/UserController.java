@@ -82,7 +82,7 @@ public class UserController {
     @PutMapping(value = "/{username}/password")
     public ResponseEntity<Object> updatePassword(@PathVariable("username") String username, @RequestBody User user) {
         userService.updatePassword(username, user);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping(value = "/{username}")
@@ -101,7 +101,7 @@ public class UserController {
         try {
             String authorityName = (String) fields.get("authority");
             userService.addAuthority(username, authorityName);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok().build();
         }
         catch (Exception ex) {
             throw new BadRequestException();

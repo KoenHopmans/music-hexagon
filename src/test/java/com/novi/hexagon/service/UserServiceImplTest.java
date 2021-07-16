@@ -1,6 +1,7 @@
 package com.novi.hexagon.service;
 
 import com.novi.hexagon.exceptions.RecordNotFoundException;
+import com.novi.hexagon.exceptions.UsernameNotFoundException;
 import com.novi.hexagon.model.Authority;
 import com.novi.hexagon.model.User;
 import com.novi.hexagon.repository.DemoRepository;
@@ -46,9 +47,19 @@ class UserServiceImplTest {
 
     @Test
     void testGetUser() {
+        User testUser = new User("testUsername");
+        when(userRepository.existsById(testUser.getUsername())).thenReturn(true);
         userService.getUser("testUsername");
         verify(userRepository).findById("testUsername");
     }
+
+    @Test
+    void testGetUser_NotFoundException() {
+        User testUser = new User("testUsername");
+        when(userRepository.existsById(testUser.getUsername())).thenReturn(false);
+        assertThrows(RecordNotFoundException.class,()->{userService.getUser(testUser.getUsername());});
+    }
+
 
     @Test
     void testCreateUser() {
@@ -62,8 +73,18 @@ class UserServiceImplTest {
 
     @Test
     void testDeleteUser() {
-        userService.deleteUser("testUsername");
+        User testUser = new User("testUsername");
+        when(userRepository.existsById(testUser.getUsername())).thenReturn(true);
+        userService.deleteUser(testUser.getUsername());
         verify(userRepository).deleteByUsername("testUsername");
+    }
+
+
+    @Test
+    void testDeleteUser_NotFoundException() {
+        User testUser = new User("testUsername");
+        when(userRepository.existsById(testUser.getUsername())).thenReturn(false);
+        assertThrows(RecordNotFoundException.class,()->{userService.deleteUser(testUser.getUsername());});
     }
 
     @Test
@@ -73,6 +94,13 @@ class UserServiceImplTest {
         when(userRepository.findById(testUser.getUsername())).thenReturn(java.util.Optional.of(testUser));
         userService.updateUser(testUser.getUsername(),testUser);
         verify(userRepository).save(testUser);
+    }
+
+    @Test
+    void testUpdateUser_NotFoundException() {
+        User testUser = new User("testUsername");
+        when(userRepository.existsById(testUser.getUsername())).thenReturn(false);
+        assertThrows(RecordNotFoundException.class,()->{userService.updateUser(testUser.getUsername(),testUser);});
     }
 
     @Captor
@@ -87,14 +115,6 @@ class UserServiceImplTest {
         verify(userRepository).save(userCaptor.capture());
         assertEquals(userCaptor.getValue().getPassword(), "encodedPassword");
     }
-
-    @Test
-    void testUpdatePassword2() {
-        User testUser = new User("testUsername");
-        when(userRepository.existsById(testUser.getUsername())).thenReturn(false);
-        assertThrows(RecordNotFoundException.class,()->{userService.updatePassword(testUser.getUsername(),testUser);});
-    }
-
 
     @Test
     void testUpdatePassword_NotFoundException() {
@@ -114,12 +134,27 @@ class UserServiceImplTest {
     }
 
     @Test
+    void testGetAuthorities_NotFoundException() {
+        User testUser = new User("testUsername");
+        when(userRepository.existsById(testUser.getUsername())).thenReturn(false);
+        assertThrows(UsernameNotFoundException.class,()->{userService.getAuthorities(testUser.getUsername());});
+    }
+
+    @Test
     void testAddAuthority() {
         User testUser = new User("testUsername");
         when(userRepository.existsById(testUser.getUsername())).thenReturn(true);
         when(userRepository.findById(testUser.getUsername())).thenReturn(java.util.Optional.of(testUser));
         userService.addAuthority(testUser.getUsername(),"ADMIN");
         verify(userRepository).save(testUser);
+    }
+
+    @Test
+    void testAddAuthority_NotFoundException() {
+        User testUser = new User("testUsername");
+        String testAuthority = "Admin";
+        when(userRepository.existsById(testUser.getUsername())).thenReturn(false);
+        assertThrows(UsernameNotFoundException.class,()->{userService.addAuthority(testUser.getUsername(),testAuthority);});
     }
 
     @Test
@@ -130,5 +165,13 @@ class UserServiceImplTest {
         when(userRepository.findById(testUser.getUsername())).thenReturn(java.util.Optional.of(testUser));
         userService.removeAuthority(testUser.getUsername(),"ADMIN");
         verify(userRepository).save(testUser);
+    }
+
+    @Test
+    void testRemoveAuthority_NotFoundException() {
+        User testUser = new User("testUsername");
+        String testAuthority = "Admin";
+        when(userRepository.existsById(testUser.getUsername())).thenReturn(false);
+        assertThrows(UsernameNotFoundException.class,()->{userService.addAuthority(testUser.getUsername(),testAuthority);});
     }
 }
