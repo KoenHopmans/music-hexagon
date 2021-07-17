@@ -71,8 +71,6 @@ public class UserServiceImpl implements com.novi.hexagon.service.UserService {
         user.setFirstName(newUser.getFirstName());
         user.setLastName(newUser.getLastName());
         String photo = newUser.getPhoto();
-        System.out.println("PHOTO");
-        System.out.println(photo);
         if(!(photo==null)){
         user.setPhoto(newUser.getPhoto());}
         userRepository.save(user);
@@ -80,7 +78,6 @@ public class UserServiceImpl implements com.novi.hexagon.service.UserService {
 
     @Override
     public void updatePassword(String username, User newUser) {
-        System.out.println("TEST");
         if (!userRepository.existsById(username)) throw new RecordNotFoundException();
         User user = userRepository.findById(username).get();
         user.setPassword(passwordEncoder.encode(newUser.getPassword()));
